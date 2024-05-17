@@ -2,8 +2,7 @@
 
 namespace EventTracker\Services;
 
-use CBOX\Framework\Enums\TrackableEvent;
-use CBOX\Framework\Events\TrackableEventEncountered;
+use EventTracker\Actions\TrackableEvent\CreateTrackableEvent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\ValidationException;
 
@@ -32,12 +31,8 @@ class EventTrackerService
         return $this;
     }
 
-    public function send(TrackableEvent $trackableEvent, ?int $value = null): void
+    public function send(string $trackableEvent, ?int $value = null): void
     {
-        if (!$trackableEvent->value) {
-            throw ValidationException::withMessages(['Invalid event name']);
-        }
-
         $userId = $this->getActingUser();
 
         if(!$userId)
@@ -46,7 +41,14 @@ class EventTrackerService
             return;
         }
 
-        event(new TrackableEventEncountered($trackableEvent->value, $userId, $this->metadata, $this->trackedModelName, $this->trackedModelId, $value));
+        CreateTrackableEvent::dispatch(
+            $trackableEvent,
+            $userId,
+            $this->metadata,
+            $this->trackedModelName,
+            $this->trackedModelId,
+            $value
+        );
     }
 
     private function getActingUser()

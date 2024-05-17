@@ -23,7 +23,7 @@
   "extra": {
     "laravel": {
         "providers": [
-          "EventTrack\\EventTrackerServiceProvider"
+          "EventTracker\\EventTrackerServiceProvider"
         ],
         "aliases": {
           "EventTracker": "EventTracker\\Facades\\EventTracker"

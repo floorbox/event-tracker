@@ -2,7 +2,7 @@
 
 namespace EventTracker\Facades;
 
-use CBOX\Framework\Services\EventTrackerService;
+use EventTracker\Services\EventTrackerService;
 use Illuminate\Support\Facades\Facade;
 
 class EventTracker extends Facade
