@@ -1,0 +1,33 @@
+{
+    "name": "floorbox/event-tracker",
+    "description": "An event tracker for Laravel",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+      {
+        "name": "Fa Perreault",
+        "email": "fa.perreault@thefloorbox.ca"
+      }
+    ],
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^10.0",
+        "lorisleiva/laravel-actions": "^2.4"
+      },
+
+  "autoload": {
+    "psr-4": {
+      "EventTracker\\": "src"
+    }
+    },
+  "extra": {
+    "laravel": {
+        "providers": [
+          "EventTrack\\EventTrackerServiceProvider"
+        ],
+        "aliases": {
+          "EventTracker": "EventTracker\\Facades\\EventTracker"
+        }
+      }
+  }
+}
