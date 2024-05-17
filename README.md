@@ -4,7 +4,6 @@
 ### Use like this
 
 ```
-
 $metadata = request()->headers()->all();
 $product = Product::first();
 
