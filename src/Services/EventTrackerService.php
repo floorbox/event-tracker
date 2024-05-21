@@ -3,6 +3,7 @@
 namespace EventTracker\Services;
 
 use EventTracker\Actions\TrackableEvent\CreateTrackableEvent;
+use EventTracker\Enums\TrackableEvents;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\ValidationException;
 
@@ -31,18 +32,19 @@ class EventTrackerService
         return $this;
     }
 
-    public function send(string $trackableEvent, ?int $value = null): void
+    public function send(mixed $trackableEvent, ?int $value = null): void
     {
+        $eventTitle = $trackableEvent instanceof TrackableEvents ? $trackableEvent->value : $trackableEvent;
+
         $userId = $this->getActingUser();
 
-        if(!$userId)
-        {
+        if (!$userId) {
             // For now, if the event sent is anonymous, we just bail
             return;
         }
 
         CreateTrackableEvent::dispatch(
-            $trackableEvent,
+            $eventTitle,
             $userId,
             $this->metadata,
             $this->trackedModelName,
