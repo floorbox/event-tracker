@@ -53,23 +53,28 @@ class EventTrackerService
         );
     }
 
-    private function getActingUser()
+    private function getActingUser(): ?int
     {
         $actingUserId = auth()->id();
 
-        if (!$actingUserId) {
-            $actingUserId = auth()->user()?->id ?? null;
+        if ($actingUserId) {
+            return $actingUserId;
         }
 
-        if (!$actingUserId) {
-            $actingUserId = auth('web')->user()?->id ?? null;
+        foreach (array_keys((array) config('auth.guards', [])) as $guardName) {
+            try {
+                $guardUserId = auth($guardName)->id();
+            } catch (\Throwable $e) {
+                report($e);
+                continue;
+            }
+
+            if ($guardUserId) {
+                return $guardUserId;
+            }
         }
 
-        if (!$actingUserId) {
-            $actingUserId = auth('api')->user()?->id ?? null;
-        }
-
-        return $actingUserId;
+        return null;
     }
 
 }
